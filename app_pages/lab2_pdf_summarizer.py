@@ -2,16 +2,16 @@ import streamlit as st
 from openai import OpenAI
 
 # 1. Add a title to the web page
-st.title("MY Document Q&A")
+st.title("Lab 2 - PDF Summarizer")
 st.write("Upload a .txt document and ask a question about it.")
 
-# 2. Get the user's OpenAI API key
-#    type="password" hides the key on screen. We only keep it in this
-#    variable while the page runs — it is never saved or printed.
-api_key = st.text_input("OpenAI API key", type="password")
-
-if not api_key:
-    st.info("Enter your OpenAI API key to continue.")
+# 2. Get the OpenAI API key from Streamlit secrets
+#    Locally, Streamlit reads it from .streamlit/secrets.toml (kept out of Git).
+#    On Streamlit Community Cloud, it comes from the app's Secrets settings.
+try:
+    api_key = st.secrets["OPENAI_API_KEY"]
+except Exception:
+    st.error("No OpenAI API key found. Add OPENAI_API_KEY to the app's secrets.")
     st.stop()
 
 # 3. Let the user upload a .txt document
